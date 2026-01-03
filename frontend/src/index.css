@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #fefbf7;
+  --foreground: #1a1612;
+  --card: #ffffff;
+  --card-foreground: #1a1612;
+  --popover: #ffffff;
+  --popover-foreground: #1a1612;
+  --primary: #6b4ce6;
+  --primary-foreground: #ffffff;
+  --secondary: #f3ede3;
+  --secondary-foreground: #3d3832;
+  --muted: #f8f3ec;
+  --muted-foreground: #6e6762;
+  --accent: #0ea5e9;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #fefbf7;
+  --border: #e7dfd3;
+  --input: #f3ede3;
+  --ring: #6b4ce6;
+  --sidebar: #fefbf7;
+  --sidebar-foreground: #1a1612;
+  --sidebar-primary: #6b4ce6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f3ede3;
+  --sidebar-accent-foreground: #1a1612;
+  --sidebar-border: #e7dfd3;
+  --sidebar-ring: #6b4ce6;
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'Space Mono', 'Courier New', monospace;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #0a0a0f;
+  --foreground: #e8e7f0;
+  --card: #16161f;
+  --card-foreground: #e8e7f0;
+  --popover: #16161f;
+  --popover-foreground: #e8e7f0;
+  --primary: #8b7aff;
+  --primary-foreground: #0a0a0f;
+  --secondary: #1e1e2a;
+  --secondary-foreground: #e8e7f0;
+  --muted: #1a1a24;
+  --muted-foreground: #9b9aa8;
+  --accent: #22d3ee;
+  --accent-foreground: #0a0a0f;
+  --destructive: #f87171;
+  --destructive-foreground: #0a0a0f;
+  --border: #2a2a38;
+  --input: #1a1a24;
+  --ring: #8b7aff;
+  --sidebar: #0f0f16;
+  --sidebar-foreground: #e8e7f0;
+  --sidebar-primary: #8b7aff;
+  --sidebar-primary-foreground: #0a0a0f;
+  --sidebar-accent: #1e1e2a;
+  --sidebar-accent-foreground: #e8e7f0;
+  --sidebar-border: #2a2a38;
+  --sidebar-ring: #8b7aff;
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'Space Mono', 'Courier New', monospace;
+  --radius: 0.75rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --animate-gradient-move: gradient-move 1s ease infinite;
+
+  @keyframes gradient-move {
+    0% {
+      background-position: 15% 50%;
+    }
+
+    50% {
+      background-position: 85% 50%;
+    }
+
+    100% {
+      background-position: 15% 50%;
+    }
+  }
+}
+
+/* Base styles */
+* {
+  @apply border-border/60;
+}
+
+body {
+  @apply bg-background text-foreground font-sans;
+  font-feature-settings: 'cv11', 'ss01';
+  font-variation-settings: 'opsz' 32;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-primary/50 rounded-full hover:bg-primary/40 transition-colors;
+}

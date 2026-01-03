@@ -93,8 +93,10 @@ npm run dev
 
 ### 3. Setup Frontend
 
+> Create a new terminal instance
+
 ```bash
-cd ../frontend
+cd frontend
 npm install
 # Create .env and add frontend variables
 npm run dev

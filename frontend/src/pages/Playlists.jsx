@@ -3,6 +3,7 @@ import Loading from "@/components/Loading"
 import PlaylistCard from "@/components/playlists/PlaylistCard"
 import { usePlaylists } from "@/hooks/playlists/usePlaylists"
 import { useState } from "react"
+import { toast } from "sonner"
 
 const Playlists = () => {
     const { playlists, loading, error, refetch } = usePlaylists()
@@ -14,33 +15,32 @@ const Playlists = () => {
         if (creating) return
         const trimmedName = name.trim()
         if (trimmedName.length < 3 || trimmedName.length > 60) {
-            alert("Playlist name should be 3-60 characters long.")
+            toast.error("Playlist name should be 3-60 characters long.")
             return
         }
 
         try {
             setCreating(true)
             await createPlaylist({ name: trimmedName })
-            alert("Playlist created!")
+            toast.success("Playlist created!")
             setName("")
             await refetch()
         } catch (error) {
             console.error("Playlist creation failed:", error)
+            toast.error("Playlist creation failed")
         } finally {
             setCreating(false)
         }
     }
 
     async function handleDelete(playlist) {
-        const shouldDelete = confirm(`Are you sure you want to delete ${playlist.name}?`)
-        if (!shouldDelete) return
-
         try {
             await removePlaylist(playlist.id)
-            alert("Playlist deleted!")
+            toast.success("Playlist deleted!")
             await refetch()
         } catch (error) {
             console.error("Failed to delete playlist:", error)
+            toast.error("Failed to delete playlist")
         }
     }
 
@@ -72,7 +72,7 @@ const Playlists = () => {
             {/* List */}
             <ul className="space-y-3">
                 {playlists.map((playlist) => (
-                    <PlaylistCard key={playlist.id} playlist={playlist} handleDelete={handleDelete} />
+                    <PlaylistCard key={playlist.id} playlist={playlist} handleDelete={handleDelete} refetch={refetch} />
                 ))}
             </ul>
         </div>

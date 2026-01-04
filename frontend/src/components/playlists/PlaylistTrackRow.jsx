@@ -19,7 +19,7 @@ const PlaylistTrackRow = ({ track, index, playlistId, refetch }) => {
             await removeTrackFromPlaylist(playlistId, track.id)
             toast.success("Track removed from playlist")
             await refetch()
-        } catch (error) {
+        } catch {
             toast.error("Failed to remove track")
         }
     }

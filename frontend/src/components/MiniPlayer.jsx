@@ -7,12 +7,14 @@ import {
     RotateCcw,
     Rewind,
     FastForward,
+    SkipBack,
+    SkipForward,
     Volume2,
     VolumeX,
     Loader2
 } from "lucide-react"
 import AddToPlaylistDialog from "./playlists/AddToPlaylistDialog"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 function formatTime(seconds = 0) {
     const minutes = Math.floor(seconds / 60)
@@ -33,7 +35,13 @@ const MiniPlayer = () => {
         muted,
         isLoading,
         changeVolume,
-        toggleMuted
+        // 🔴 Play-Playlist 🔴
+        toggleMuted,
+        playlist,
+        currentIndex,
+        playNext,
+        playPrevious
+        // 🔴 Play-Playlist 🔴
     } = useAudio()
     const [open, setOpen] = useState(false)
 
@@ -41,10 +49,6 @@ const MiniPlayer = () => {
     const { playlists, loading, refetch } = usePlaylists({ enabled: isMusicTrack })
 
     const progress = duration ? (currentTime / duration) * 100 : 0
-
-    useEffect(() => {
-        setOpen(false)
-    }, [currentTrack?.id])
 
     if (!currentTrack) return null
     return (
@@ -80,6 +84,16 @@ const MiniPlayer = () => {
             {/* Center: Playback Controls & Seek */}
             <div className="flex flex-col items-center gap-2 flex-1 max-w-2xl">
                 <div className="flex items-center gap-6">
+                    {/* 🔴 Play-Playlist 🔴 */}
+                    <button
+                        onClick={playPrevious}
+                        disabled={playlist.length === 0 || currentIndex <= 0}
+                        className="text-muted-foreground hover:text-primary transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Previous Track"
+                    >
+                        <SkipBack size={20} fill="currentColor" fillOpacity={0.1} />
+                    </button>
+                    {/* 🔴 Play-Playlist 🔴 */}
                     <button
                         onClick={() => { seek(0); playTrack(currentTrack) }}
                         className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
@@ -114,6 +128,16 @@ const MiniPlayer = () => {
                     >
                         <FastForward size={22} fill="currentColor" fillOpacity={0.1} />
                     </button>
+                    {/* 🔴 Play-Playlist 🔴 */}
+                    <button
+                        onClick={playNext}
+                        disabled={playlist.length === 0 || currentIndex >= playlist.length - 1}
+                        className="text-muted-foreground hover:text-primary transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Next Track"
+                    >
+                        <SkipForward size={20} fill="currentColor" fillOpacity={0.1} />
+                    </button>
+                    {/* 🔴 Play-Playlist 🔴 */}
                     {isMusicTrack && <button
                         className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
                         onClick={() => setOpen(true)}

@@ -13,6 +13,11 @@ export default function AudioProvider({ children }) {
     const [muted, setMuted] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
+    // 🔴 Playlist queue state 🔴
+    const [playlist, setPlaylist] = useState([])
+    const [currentIndex, setCurrentIndex] = useState(-1)
+    // 🔴 Play-Playlist 🔴
+
     useEffect(() => {
         const audio = new Audio()
         audioRef.current = audio
@@ -48,12 +53,6 @@ export default function AudioProvider({ children }) {
         audio.addEventListener("loadstart", onLoadStart)
 
         return () => {
-            // Save history on unmount if playing a music track
-            if (audioRef.current && !audioRef.current.paused) {
-                // We can't easily access currentTrack here in the cleanup of THE SAME effect
-                // but we can use a ref for the current track to be safe
-                // or just rely on the other effects.
-            }
             audio.pause()
             audio.removeEventListener("loadedmetadata", onLoadMetadata)
             audio.removeEventListener("timeupdate", onTimeUpdate)
@@ -65,12 +64,40 @@ export default function AudioProvider({ children }) {
         }
     }, [])
 
+    
+    // 🔴 Auto-advance to next track when current track ends 🔴
+    useEffect(() => {
+        const audio = audioRef.current
+        if (!audio) return
+
+        const handleAutoAdvance = () => {
+            if (playlist.length > 0 && currentIndex < playlist.length - 1) {
+                const nextIndex = currentIndex + 1
+                setCurrentIndex(nextIndex)
+                // Trigger playback of next track
+                const nextTrack = playlist[nextIndex]
+                if (nextTrack) {
+                    setIsLoading(true)
+                    setCurrentTrack(nextTrack)
+                    audio.src = nextTrack.audio_path
+                    audio.currentTime = 0
+                    audio.play()
+                    setIsPlaying(true)
+                }
+            }
+        }
+
+        audio.addEventListener("ended", handleAutoAdvance)
+        return () => audio.removeEventListener("ended", handleAutoAdvance)
+    }, [playlist, currentIndex])
+    // 🔴 Play-Playlist 🔴
+
     // Track recently played on track change
     useEffect(() => {
         if (currentTrack && !currentTrack.podcast) {
             saveRecentlyPlayed(currentTrack.id, 0);
         }
-    }, [currentTrack?.id]);
+    }, [currentTrack]);
 
     // Save on unmount helper
     useEffect(() => {
@@ -79,7 +106,7 @@ export default function AudioProvider({ children }) {
                 saveRecentlyPlayed(currentTrack.id, Math.round(audioRef.current.currentTime));
             }
         }
-    }, [currentTrack?.id, isPlaying]); // ensures we have latest state
+    }, [currentTrack, isPlaying]); // ensures we have latest state
 
     function playTrack(track) {
         if (!audioRef.current) return
@@ -126,6 +153,33 @@ export default function AudioProvider({ children }) {
         audioRef.current.muted = !audioRef.current.muted
         setMuted(audioRef.current.muted)
     }
+    // 🔴 Play-Playlist 🔴
+    function playPlaylist(tracks, startIndex = 0) {
+        if (!tracks || tracks.length === 0) return
+
+        setPlaylist(tracks)
+        setCurrentIndex(startIndex)
+        playTrack(tracks[startIndex])
+    }
+
+    function playNext() {
+        if (playlist.length === 0) return
+        if (currentIndex < playlist.length - 1) {
+            const nextIndex = currentIndex + 1
+            setCurrentIndex(nextIndex)
+            playTrack(playlist[nextIndex])
+        }
+    }
+
+    function playPrevious() {
+        if (playlist.length === 0) return
+        if (currentIndex > 0) {
+            const prevIndex = currentIndex - 1
+            setCurrentIndex(prevIndex)
+            playTrack(playlist[prevIndex])
+        }
+    }
+    // 🔴 Play-Playlist 🔴
 
     return (
         <AudioContext.Provider value={{
@@ -136,11 +190,20 @@ export default function AudioProvider({ children }) {
             volume,
             muted,
             isLoading,
+            // 🔴 Playlist queue state 🔴
+            playlist,
+            currentIndex,
+            // 🔴 Playlist queue state 🔴
             playTrack,
             pauseTrack,
             seek,
             changeVolume,
-            toggleMuted
+            // 🔴 Play-Playlist 🔴
+            toggleMuted,
+            playPlaylist,
+            playNext,
+            playPrevious
+            // 🔴 Play-Playlist 🔴
         }}>
             {children}
         </AudioContext.Provider>

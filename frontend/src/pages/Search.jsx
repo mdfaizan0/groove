@@ -76,7 +76,7 @@ const Search = () => {
                     {episodes.length > 0 && (
                         <div className="space-y-6">
                             <div className="flex items-center justify-between border-b border-white/5 pb-4">
-                                <h2 className="text-2xl font-black tracking-tight text-white">Episodes</h2>
+                                <h2 className="text-2xl font-black tracking-tight text-white">Podcast Episodes</h2>
                                 <span className="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full">
                                     {episodes.length} results
                                 </span>

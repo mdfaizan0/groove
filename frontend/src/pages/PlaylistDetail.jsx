@@ -2,10 +2,16 @@ import Loading from "@/components/Loading"
 import { usePlaylistDetail } from "@/hooks/playlists/usePlaylistDetail"
 import { useParams } from "react-router-dom"
 import PlaylistTrackRow from "@/components/playlists/PlaylistTrackRow"
+import { Button } from "@/components/ui/button"
+import { Play } from "lucide-react"
+import { useAudio } from "@/context/audio/useAudio"
 
 const PlaylistDetail = () => {
   const { playlistId } = useParams()
   const { tracks, playlist, loading, error, refetch } = usePlaylistDetail(playlistId)
+  // 🔴 Play-Playlist 🔴
+  const { playPlaylist } = useAudio()
+  // 🔴 Play-Playlist 🔴
 
   if (loading) return <Loading />
   if (error) return <div>Error: {error}</div>
@@ -13,13 +19,28 @@ const PlaylistDetail = () => {
   return (
     <div className="mx-auto max-w-7xl px-6 py-6 space-y-8">
       {/* Header */}
-      <div className="flex flex-col gap-1">
-        <h1 className="text-3xl font-bold tracking-tight">
-          {playlist?.name || "Playlist"}
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          {playlist?.tracks_count || 0} tracks • Created by you
-        </p>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl font-bold tracking-tight">
+            {playlist?.name || "Playlist"}
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            {playlist?.tracks_count || 0} tracks • Created by you
+          </p>
+        </div>
+
+        {/* 🔴 Play-Playlist 🔴 */}
+        {tracks.length > 0 && (
+          <Button
+            onClick={() => playPlaylist(tracks)}
+            className="w-fit"
+            size="lg"
+          >
+            <Play size={18} />
+            Play All
+          </Button>
+        )}
+        {/* 🔴 Play-Playlist 🔴 */}
       </div>
 
       {/* Tracks List */}

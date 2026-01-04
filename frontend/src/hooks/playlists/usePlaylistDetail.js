@@ -1,5 +1,5 @@
 import { fetchPlaylistTracks } from "@/api/playlists.api"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 export function usePlaylistDetail(playlistId) {
     const [tracks, setTracks] = useState([])
@@ -7,9 +7,9 @@ export function usePlaylistDetail(playlistId) {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    async function loadData() {
+    const loadData = useCallback(async () => {
         try {
-            setLoading(true) // Moved here to ensure loading state is set on refetch
+            setLoading(true)
             const data = await fetchPlaylistTracks(playlistId)
             setTracks(data.tracks)
             setPlaylist(data.playlist)
@@ -18,11 +18,11 @@ export function usePlaylistDetail(playlistId) {
         } finally {
             setLoading(false)
         }
-    }
+    }, [playlistId])
 
     useEffect(() => {
         loadData()
-    }, [playlistId])
+    }, [loadData])
 
     return { tracks, playlist, loading, error, refetch: loadData }
 }

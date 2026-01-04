@@ -1,6 +1,6 @@
 import { fetchRecentlyPlayed } from "@/api/recentlyPlayed.api";
 import { useAuth } from "@/context/auth/useAuth";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useRecentlyPlayed() {
     const { user } = useAuth();
@@ -8,7 +8,7 @@ export function useRecentlyPlayed() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    async function loadData() {
+    const loadData = useCallback(async () => {
         if (!user) {
             setTracks([]);
             setLoading(false);
@@ -24,11 +24,11 @@ export function useRecentlyPlayed() {
         } finally {
             setLoading(false);
         }
-    }
+    }, [user])
 
     useEffect(() => {
         loadData();
-    }, [user]);
+    }, [loadData]);
 
     return { tracks, loading, error, refetch: loadData };
 }

@@ -14,13 +14,13 @@ export async function getNewPosition(playlistId) {
         }
 
         if (error && error.code === "PGRST116") {
-            console.log("Error fetching new position", error)
+            console.error("Error fetching new position", error)
             return 1
         }
 
         return data[0].position + 1
     } catch (error) {
-        console.log("Error fetching new position", error)
+        console.error("Error fetching new position", error)
         return 1
     }
 }

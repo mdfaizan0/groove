@@ -15,11 +15,15 @@ const Loading = () => (
             </div>
 
             <div className="flex flex-col items-center gap-2">
-                <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 bg-primary rounded-sm flex items-center justify-center">
-                        <span className="text-primary-foreground font-black text-[10px] italic">G</span>
-                    </div>
-                    <h2 className="text-lg font-bold tracking-tighter bg-linear-to-r from-primary via-foreground to-primary bg-size-[200%_auto] animate-gradient-move bg-clip-text text-transparent">Groove</h2>
+                <div className="flex items-center gap-3">
+                    <img
+                        src="/favicon/favicon-32x32.png"
+                        alt="Groove"
+                        className="w-6 h-6 opacity-90"
+                    />
+                    <h2 className="text-2xl font-bold tracking-tight bg-linear-to-r from-primary via-foreground to-primary bg-size-[200%_auto] animate-gradient-move bg-clip-text text-transparent">
+                        Groove
+                    </h2>
                 </div>
             </div>
         </div>

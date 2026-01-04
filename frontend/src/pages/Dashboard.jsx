@@ -1,5 +1,5 @@
 import { useAuth } from "@/context/auth/useAuth"
-import { ShieldCheck, Mail, Calendar, Headset, Music4, Timer, History, Plus, Trash2, Upload, LayoutGrid, Mic2 } from "lucide-react"
+import { ShieldCheck, Mail, Calendar, Headset, Music4, Timer, History, Plus, Trash2, Upload, LayoutGrid, Mic2, Pencil } from "lucide-react"
 import { useRecentlyPlayed } from "@/hooks/recentlyPlayed/useRecentlyPlayed"
 import TrackCard from "@/components/track/TrackCard"
 import Loading from "@/components/Loading"
@@ -14,6 +14,8 @@ import * as adminApi from "@/api/admin.api"
 import { fetchCategories } from "@/api/categories.api"
 import { fetchPodcastCollections } from "@/api/podcasts.api"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
 
 const getAudioDuration = (file) => {
     return new Promise((resolve) => {
@@ -507,7 +509,7 @@ function Dashboard() {
                                             placeholder="Description"
                                             value={podcastData.description}
                                             onChange={(e) => setPodcastData({ ...podcastData, description: e.target.value })}
-                                            className="bg-black/20 border-white/5 rounded-2xl min-h-[100px]"
+                                            className="bg-black/20 border-white/5 rounded-2xl min-h-25"
                                         />
                                         <div className="space-y-2">
                                             <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-1">Cover Image</label>
@@ -562,7 +564,7 @@ function Dashboard() {
                                             placeholder="Episode Description"
                                             value={episodeData.description}
                                             onChange={(e) => setEpisodeData({ ...episodeData, description: e.target.value })}
-                                            className="bg-black/20 border-white/5 rounded-2xl min-h-[100px]"
+                                            className="bg-black/20 border-white/5 rounded-2xl min-h-25"
                                         />
                                         <div className="space-y-2">
                                             <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-1">Audio File</label>

@@ -40,7 +40,11 @@ const AddToPlaylistDialog = ({ trackId, open, onOpenChange, playlists, loading, 
         toast.success("Track added to playlist")
       }
     } catch (error) {
-      toast.error("Failed to add track to playlist")
+      if (error.response?.status === 409) {
+        toast.warning("Track already exists in playlist")
+      } else {
+        toast.error("Failed to add track to playlist")
+      }
     }
   }
   return (
